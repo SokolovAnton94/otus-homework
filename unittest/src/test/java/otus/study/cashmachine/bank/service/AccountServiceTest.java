@@ -4,22 +4,17 @@ package otus.study.cashmachine.bank.service;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import otus.study.cashmachine.bank.dao.AccountDao;
 import otus.study.cashmachine.bank.data.Account;
-import otus.study.cashmachine.bank.data.Card;
 import otus.study.cashmachine.bank.service.impl.AccountServiceImpl;
 
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class AccountServiceTest {
@@ -31,7 +26,7 @@ public class AccountServiceTest {
     @Test
     void createAccountMock() {
         accountServiceImpl = new AccountServiceImpl(accountDao);
-        Account testAccount = new Account(1l, BigDecimal.TEN);
+        Account testAccount = new Account(1L, BigDecimal.TEN);
         when(accountDao.saveAccount(any())).thenReturn(testAccount);
         assertEquals(testAccount, accountServiceImpl.createAccount(BigDecimal.TEN));
 // @TODO test account creation with mock and ArgumentMatcher

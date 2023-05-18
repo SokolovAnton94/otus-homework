@@ -3,7 +3,10 @@ package otus.study.cashmachine.machine.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import otus.study.cashmachine.TestUtil;
 import otus.study.cashmachine.bank.dao.CardsDao;
@@ -14,15 +17,14 @@ import otus.study.cashmachine.machine.data.CashMachine;
 import otus.study.cashmachine.machine.data.MoneyBox;
 import otus.study.cashmachine.machine.service.impl.CashMachineServiceImpl;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 @ExtendWith(MockitoExtension.class)
 class CashMachineServiceTest {
@@ -42,7 +44,7 @@ class CashMachineServiceTest {
 
     private CashMachineServiceImpl cashMachineService;
 
-    private CashMachine cashMachine = new CashMachine(new MoneyBox());
+    private final CashMachine cashMachine = new CashMachine(new MoneyBox());
 
     private final String cardNum = "1234";
     private final String pin = "0000";
@@ -74,7 +76,7 @@ class CashMachineServiceTest {
 
     @Test
     void changePin() {
-        Card testCard = new Card(0, cardNum, 1l, TestUtil.getHash(pin));
+        Card testCard = new Card(0, cardNum, 1L, TestUtil.getHash(pin));
         when(cardsDao.getCardByNumber(any())).thenReturn(testCard);
         cashMachineService.changePin(cardNum, pin, newPin);
         ArgumentCaptor<Card> cardCaptor = ArgumentCaptor.forClass(Card.class);
@@ -85,7 +87,7 @@ class CashMachineServiceTest {
 
     @Test
     void changePinWithAnswer() {
-        Card testCard = new Card(0, cardNum, 1l, TestUtil.getHash(pin));
+        Card testCard = new Card(0, cardNum, 1L, TestUtil.getHash(pin));
         when(cardsDao.getCardByNumber(any())).thenReturn(testCard);
         List<Card> cards = new ArrayList<>();
         when(cardsDao.saveCard(any(Card.class))).thenAnswer(invocation -> {
