@@ -5,12 +5,24 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import otus.study.cashmachine.TestUtil;
 import otus.study.cashmachine.bank.dao.CardsDao;
+import otus.study.cashmachine.bank.data.Card;
 import otus.study.cashmachine.bank.service.AccountService;
 import otus.study.cashmachine.bank.service.impl.CardServiceImpl;
 import otus.study.cashmachine.machine.data.CashMachine;
 import otus.study.cashmachine.machine.data.MoneyBox;
 import otus.study.cashmachine.machine.service.impl.CashMachineServiceImpl;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @ExtendWith(MockitoExtension.class)
 class CashMachineServiceTest {
@@ -32,6 +44,10 @@ class CashMachineServiceTest {
 
     private CashMachine cashMachine = new CashMachine(new MoneyBox());
 
+    private final String cardNum = "1234";
+    private final String pin = "0000";
+    private final String newPin = "9876";
+
     @BeforeEach
     void init() {
         cashMachineService = new CashMachineServiceImpl(cardService, accountService, moneyBoxService);
@@ -40,6 +56,10 @@ class CashMachineServiceTest {
 
     @Test
     void getMoney() {
+        BigDecimal testAmount = BigDecimal.valueOf(1000);
+        doReturn(testAmount).when(cardService).getMoney(eq(cardNum), eq(pin), eq(testAmount));
+        cashMachineService.getMoney(cashMachine, cardNum, pin, testAmount);
+        verify(moneyBoxService, only()).getMoney(any(), eq(testAmount.intValue()));
 // @TODO create get money test using spy as mock
     }
 
@@ -54,11 +74,27 @@ class CashMachineServiceTest {
 
     @Test
     void changePin() {
+        Card testCard = new Card(0, cardNum, 1l, TestUtil.getHash(pin));
+        when(cardsDao.getCardByNumber(any())).thenReturn(testCard);
+        cashMachineService.changePin(cardNum, pin, newPin);
+        ArgumentCaptor<Card> cardCaptor = ArgumentCaptor.forClass(Card.class);
+        verify(cardsDao).saveCard(cardCaptor.capture());
+        assertEquals(cardCaptor.getValue().getPinCode(), TestUtil.getHash(newPin));
 // @TODO create change pin test using spy as implementation and ArgumentCaptor and thenReturn
     }
 
     @Test
     void changePinWithAnswer() {
+        Card testCard = new Card(0, cardNum, 1l, TestUtil.getHash(pin));
+        when(cardsDao.getCardByNumber(any())).thenReturn(testCard);
+        List<Card> cards = new ArrayList<>();
+        when(cardsDao.saveCard(any(Card.class))).thenAnswer(invocation -> {
+            Card card = invocation.getArgument(0);
+            cards.add(card);
+            return card;
+        });
+        cashMachineService.changePin(cardNum, pin, newPin);
+        assertEquals(cards.get(0).getPinCode(), TestUtil.getHash(newPin));
 // @TODO create change pin test using spy as implementation and mock an thenAnswer
     }
 }
