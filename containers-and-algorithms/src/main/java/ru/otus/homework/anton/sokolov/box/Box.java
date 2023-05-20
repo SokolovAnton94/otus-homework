@@ -21,6 +21,8 @@ public class Box<T extends Fruit> {
     }
 
     public void pourOver(Box<? super T> box) {
-        box.fruits.addAll(this.fruits);
+        List<T> copyFruits = List.copyOf(fruits);
+        fruits.clear();
+        box.fruits.addAll(copyFruits);
     }
 }
