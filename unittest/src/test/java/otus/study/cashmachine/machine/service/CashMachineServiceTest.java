@@ -49,6 +49,7 @@ class CashMachineServiceTest {
     private final String cardNum = "1234";
     private final String pin = "0000";
     private final String newPin = "9876";
+    private final Card testCard = new Card(0, cardNum, 1L, TestUtil.getHash(pin));
 
     @BeforeEach
     void init() {
@@ -76,7 +77,6 @@ class CashMachineServiceTest {
 
     @Test
     void changePin() {
-        Card testCard = new Card(0, cardNum, 1L, TestUtil.getHash(pin));
         when(cardsDao.getCardByNumber(any())).thenReturn(testCard);
         cashMachineService.changePin(cardNum, pin, newPin);
         ArgumentCaptor<Card> cardCaptor = ArgumentCaptor.forClass(Card.class);
@@ -87,7 +87,6 @@ class CashMachineServiceTest {
 
     @Test
     void changePinWithAnswer() {
-        Card testCard = new Card(0, cardNum, 1L, TestUtil.getHash(pin));
         when(cardsDao.getCardByNumber(any())).thenReturn(testCard);
         List<Card> cards = new ArrayList<>();
         when(cardsDao.saveCard(any(Card.class))).thenAnswer(invocation -> {
