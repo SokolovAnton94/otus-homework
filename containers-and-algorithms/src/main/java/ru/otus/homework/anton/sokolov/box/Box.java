@@ -21,6 +21,13 @@ public class Box<T extends Fruit> {
     }
 
     public void pourOver(Box<? super T> box) {
+        if (box == null) {
+            System.out.println("Fruit will not be spilled. Box must be not null");
+            return;
+        }
+        if (this == box) {
+            return;
+        }
         List<T> copyFruits = List.copyOf(fruits);
         fruits.clear();
         box.fruits.addAll(copyFruits);
