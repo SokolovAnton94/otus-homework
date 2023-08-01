@@ -25,7 +25,7 @@ dependencies {
 }
 
 shadowJar{
-    archiveBaseName.set('annotations')
+    archiveBaseName.set('serialization')
     archiveVersion.set('1.0.0')
     archiveClassifier.set('')
     manifest {
