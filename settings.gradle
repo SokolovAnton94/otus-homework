@@ -8,3 +8,5 @@ include 'custom-to-string'
 include 'annotation-processor'
 include 'logger'
 include 'atm'
+include 'serialization'
+
