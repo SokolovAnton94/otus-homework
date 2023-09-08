@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Get balance</title>
+</head>
+<body>
+<div class="container">
+    <h1>ATM</h1>
+    <hr>
+    <h2>Get balance</h2>
+
+    <form action="#" th:action="@{/balance/view}" th:object="${credentials}" method="get">
+        <div>
+            <label>Card Number:</label>
+            <input type="text" th:field="*{cardNumber}" placeholder="Card number" class="form-control mb-4 col-4"/>
+        </div>
+        <div>
+            <label>Pin:</label>
+            <input type="text" th:field="*{pin}" placeholder="Pin" class="form-control mb-4 col-4"/>
+        </div>
+        <button type="submit" class="btn btn-info col-2">Get balance</button>
+    </form>
+    <hr>
+    <a th:href="@{/}">Back to main page</a>
+</div>
+</body>
+</html>

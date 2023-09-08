@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Change pin</title>
+</head>
+<body>
+<div class="container">
+    <h1>ATM</h1>
+    <hr>
+    <h2>Change pin</h2>
+
+    <form action="#" th:action="@{/pin/change}" th:object="${parameters}" method="post">
+        <div>
+            <label>Card Number:</label>
+            <input type="text" th:field="${parameters.credentials.cardNumber}" placeholder="Card number" class="form-control mb-4 col-4"/>
+        </div>
+        <div>
+            <label>Old pin:</label>
+            <input type="text" th:field="${parameters.credentials.pin}" placeholder="Old pin" class="form-control mb-4 col-4"/>
+        </div>
+        <div>
+            <label>New pin:</label>
+            <input type="text" th:field="*{newPin}" placeholder="New pin" class="form-control mb-4 col-4"/>
+        </div>
+        <button type="submit" class="btn btn-info col-2">Change pin</button>
+    </form>
+    <hr>
+    <a th:href="@{/}">Back to main page</a>
+</div>
+</body>
+</html>

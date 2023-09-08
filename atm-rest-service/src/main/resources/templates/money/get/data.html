@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Get money</title>
+</head>
+<body>
+<div class="container">
+    <h1>ATM</h1>
+    <hr>
+    <h2>Get money</h2>
+
+    <form action="#" th:action="@{/get/money}" th:object="${parameters}" method="get">
+        <div>
+            <label>Card Number:</label>
+            <input type="text" th:field="${parameters.credentials.cardNumber}" placeholder="Card number" class="form-control mb-4 col-4"/>
+        </div>
+        <div>
+            <label>Pin:</label>
+            <input type="text" th:field="${parameters.credentials.pin}" placeholder="Pin" class="form-control mb-4 col-4"/>
+        </div>
+        <div>
+            <label>Amount:</label>
+            <input type="number" th:field="*{amount}" placeholder="Amount" class="form-control mb-4 col-4"/>
+        </div>
+        <button type="submit" class="btn btn-info col-2">Get money</button>
+    </form>
+    <hr>
+    <a th:href="@{/}">Back to main page</a>
+</div>
+</body>
+</html>
