@@ -9,4 +9,5 @@ include 'annotation-processor'
 include 'logger'
 include 'atm'
 include 'serialization'
+include 'atm-rest-service'
 
