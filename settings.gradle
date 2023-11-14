@@ -10,4 +10,5 @@ include 'logger'
 include 'atm'
 include 'serialization'
 include 'atm-rest-service'
+include 'concurrent-collection'
 
