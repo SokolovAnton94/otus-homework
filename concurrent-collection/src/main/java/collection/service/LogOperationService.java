@@ -1,5 +1,8 @@
 package collection.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -8,10 +11,11 @@ import java.nio.file.StandardOpenOption;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class LogOperationService implements AutoCloseable{
-    private final ExecutorService executorService = Executors.newFixedThreadPool(1);
-    private final String insertFileName = "inserted.txt";
-    private final String deleteFileName = "deleted.txt";
+public class LogOperationService implements AutoCloseable {
+    private final static ExecutorService executorService = Executors.newFixedThreadPool(1);
+    private final static String insertFileName = "inserted.txt";
+    private final static String deleteFileName = "deleted.txt";
+    private static final Logger logger = LoggerFactory.getLogger(LogOperationService.class);
 
     public void logInsert(Object o) {
         executorService.execute(() -> {
@@ -21,7 +25,7 @@ public class LogOperationService implements AutoCloseable{
                         StandardCharsets.UTF_8,
                         StandardOpenOption.CREATE,
                         StandardOpenOption.APPEND);
-                System.out.println(Thread.currentThread().getName() + " Insert: " + o);
+                logger.info(Thread.currentThread().getName() + " Insert: " + o);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -36,7 +40,7 @@ public class LogOperationService implements AutoCloseable{
                         StandardCharsets.UTF_8,
                         StandardOpenOption.CREATE,
                         StandardOpenOption.APPEND);
-                System.out.println(Thread.currentThread().getName() + " Delete: " + o);
+                logger.info(Thread.currentThread().getName() + " Delete: " + o);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
